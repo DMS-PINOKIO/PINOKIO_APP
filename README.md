@@ -1,1 +1,0 @@
-PINOKIO_APP
