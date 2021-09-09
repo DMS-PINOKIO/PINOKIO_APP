@@ -170,14 +170,6 @@ export default function App() {
 
         const cur = mode == "braille" ? "braille" : "ocr";
 
-        if(cur === "ocr") {
-          setContent("10000원");
-          setTimeout(() => {
-            setIsLoad(false)
-          }, 3000)
-          return
-        }
-
         axios({
           url: "http://3.34.45.215:8080/image/" + cur,
           data: form,
@@ -185,12 +177,12 @@ export default function App() {
         })
         .then(res => {
           setIsLoad(false);
-          // if(cur === "ocr") {
-            // const text = res.data[cur].join("\n");
-            // if(text == "") setContent("아무 것도 검출되지 않았습니다 !");
-            // else setContent(res.data[cur]);
-          // }
-          // else
+          if(cur === "ocr") {
+            const text = res.data[cur].join("\n");
+            if(text == "") setContent("아무 것도 검출되지 않았습니다 !");
+            else setContent(res.data[cur]);
+          }
+          else
           setContent(res.data[cur]);
         })
         .catch(err => {
@@ -208,7 +200,7 @@ export default function App() {
   useEffect(() => {
     setTimeout(() => {
       Speech.speak(content);
-    }, 2000);
+    }, 1000);
   }, [content])
 
   const postImage = (name: "braille" | "sign") => {
